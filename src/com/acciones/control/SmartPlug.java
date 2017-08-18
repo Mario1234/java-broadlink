@@ -15,10 +15,6 @@ import com.comu.comun.UnicodeFormater;
 import com.comu.criptoAES.AES;
 
 
-//nextInt is normally exclusive of the top value,
-//so add 1 to make it inclusive
-
-
 public class SmartPlug implements Comparable<SmartPlug>{
 	private final int MAXIMO = 0xffff;
 	private byte[] keyAES1 = {0x09, 0x76, 0x28, 0x34, 0x3f, (byte)0xe9, (byte)0x9e, 0x23, 0x76, 0x5c, 0x15, 0x13, (byte)0xac, (byte)0xcf, (byte)0x8b, 0x02};
@@ -76,12 +72,6 @@ public class SmartPlug implements Comparable<SmartPlug>{
 		mensaje[54] = '1';
 		byte[] encriptado=new byte[96];
 		try {
-//			for(int i=0;i<(mensaje.length/16);i++){
-//				byte[] trozoMens = new byte[16];
-//				System.arraycopy(mensaje, i*16, trozoMens, 0, 16);
-//				byte[] trozoEncript = AES.encrypt(keyAES, ivAES, trozoMens);
-//				System.arraycopy(trozoEncript, 0, encriptado, i*16, 16);
-//			}			
 			encriptado = AES.encrypt(keyAES1, ivAES, mensaje);
 			byte[] paqueteMensaje = creaPaqueteMensaje((byte)0x65, encriptado);
 			UnicodeFormater.byteArrayToHexPantalla(mensaje,false);
@@ -145,7 +135,6 @@ public class SmartPlug implements Comparable<SmartPlug>{
 				DatagramPacket paqueteRecibido = reciveDatagrama(timeout/4);
 				if(paqueteRecibido!=null && paqueteRecibido.getAddress()!=null && paqueteRecibido.getAddress().getAddress()!=null){
 					byte[] direccionIPdispositivo = paqueteRecibido.getAddress().getAddress();
-	//				byte[] datosRecibidos = paqueteRecibido.getData();
 					String s_dirIp= new String(dirIP);
 					String s_dirIpRespuesta = new String(direccionIPdispositivo);
 					if(s_dirIp.equalsIgnoreCase(s_dirIpRespuesta)){
@@ -236,7 +225,6 @@ public class SmartPlug implements Comparable<SmartPlug>{
 	
 	private void enviaDatagrama(byte[] paqueteMensaje){
 		try {
-//			Comun.dameDirIp();
 			InetAddress inetMiIp = InetAddress.getByAddress(Comun.DirIpServidorLocal);
 			InetAddress ipDispositivo = InetAddress.getByAddress(dirIP);
 			enchufeServidor = new DatagramSocket(null);

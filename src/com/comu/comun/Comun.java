@@ -15,7 +15,7 @@ public class Comun {
 	private final static String PREFIJO_LAN = "192.168.";	
 	public static void dameDirIp() {
 		DirIpServidorLocal = new byte[4];
-		Enumeration e=null;
+		Enumeration<NetworkInterface> e=null;
 		try {
 			e = NetworkInterface.getNetworkInterfaces();
 		} catch (SocketException e1) {
@@ -24,7 +24,7 @@ public class Comun {
 		while(e!= null && e.hasMoreElements())
 		{
 		    NetworkInterface n = (NetworkInterface) e.nextElement();
-		    Enumeration ee = n.getInetAddresses();
+		    Enumeration<InetAddress> ee = n.getInetAddresses();
 		    while (ee.hasMoreElements())
 		    {
 		        InetAddress inet = (InetAddress) ee.nextElement();

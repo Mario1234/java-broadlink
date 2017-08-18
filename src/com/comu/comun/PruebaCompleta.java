@@ -25,6 +25,7 @@ public class PruebaCompleta {
 //				e.printStackTrace();
 //			}
 //		}
+		
 		//descubrir los dispositivos en azucarito
 		System.out.println("----------Descubriendo-----------");
 		Descubrimiento des = new Descubrimiento();

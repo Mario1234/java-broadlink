@@ -5,14 +5,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
@@ -24,8 +21,6 @@ import com.comu.comun.UnicodeFormater;
 public class Descubrimiento {
 	
 	private Set<SmartPlug> listaDispositivos;
-
-	private Thread thread;
 	private DatagramSocket enchufeServidor;
 
 	public boolean descubreDispositivos(int timeout){
@@ -80,17 +75,6 @@ public class Descubrimiento {
 	  	enviaMensajeDescubrimiento(mensaje);
 	  	UnicodeFormater.byteArrayToHexPantalla(mensaje,false);
 	  	return recibeRespuestaDescubrimiento(timeout);
-//	  	enchufeServidor=null;
-		//hilo de escucha	  	
-//	  	thread = new Thread(){   
-//			public void run(){	  					
-//				recibeRespuestaDescubrimiento(timeout);
-//  		    }
-//  		};
-//  		thread.start();	   	
-//  		while(enchufeServidor==null);
-//  		enviaMensajeDescubrimiento(mensaje);
-//  		UnicodeFormater.byteArrayToHexPantalla(mensaje);
 	}
 
 	public Set<SmartPlug> dameListaDispositivos(){
@@ -107,34 +91,20 @@ public class Descubrimiento {
 		  	enchufeServidor.bind(address);		
 	  		System.out.println("dir broadcast de LAN: "+Comun.PartesIPServLoc[0]+"."+Comun.PartesIPServLoc[1]+"."+Comun.PartesIPServLoc[2]+".255");
 			InetAddress ipBroadcast = InetAddress.getByName(Comun.PartesIPServLoc[0]+"."+Comun.PartesIPServLoc[1]+"."+Comun.PartesIPServLoc[2]+".255");		
-//	  		InetAddress ipBroadcast = InetAddress.getByName("255.255.255.255");
 	        DatagramPacket datagrama = new DatagramPacket(mensaje, mensaje.length, ipBroadcast, Comun.PuertoBroadcast);
-//	        enchufeServidor.send(datagrama);
-	        enchufeServidor.send(datagrama);	       
-//	        enchufeServidor.close();
+	        enchufeServidor.send(datagrama);	     
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
-	        if (enchufeServidor != null) {
-//	            enchufeServidor.close();
-	        }	     	      
 		}
 	}
 	
 	private boolean recibeRespuestaDescubrimiento(int timeout){
 		DatagramSocket enchufeServidor1 = null;
 		try {
-//			InetAddress inetMiIp = InetAddress.getByAddress(dirIpLAN);
-//			InetAddress inetMiIp2 = InetAddress.getByName("127.0.0.1");
-//			enchufeServidor = new DatagramSocket(null);//, inetMiIp);	
-//			enchufeServidor.setBroadcast(true);
-//			enchufeServidor.setReuseAddress(true);
-//		  	InetSocketAddress address = new InetSocketAddress(inetMiIp, Comun.PuertoDescubrimiento);
-//		  	enchufeServidor.bind(address);	
 			enchufeServidor.close();
 			enchufeServidor=null;
 			enchufeServidor1 = new DatagramSocket(Comun.PuertoServidorLocal);
@@ -180,9 +150,9 @@ public class Descubrimiento {
 		return false;
 	}	
 	
-	private boolean esBroadLink(byte[] mac) { 
-		return (mac[0]==0xB4 && mac[1]==0x43 && mac[2]==0x0D);
-	}
+//	private boolean esBroadLink(byte[] mac) { 
+//		return (mac[0]==0xB4 && mac[1]==0x43 && mac[2]==0x0D);
+//	}
 	
 	private boolean esHangZhou(byte[] mac) { 
 		return (mac[0]==0x34 && mac[1]==(byte)0xEA && mac[2]==0x34);
